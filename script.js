@@ -1,292 +1,71 @@
-/**
- * Smart BMI Calculator - Core JavaScript Logic
- * Standard Metric Unit System (cm / kg), WHO-standard BMI calculation,
- * dynamic speedometer gauge needle rotation, and health guidance.
- */
+// ==========================================================================
+// Simple & Beginner-Friendly JavaScript for BMI Calculator
+// ==========================================================================
 
-// Application State (Metric: cm and kg)
-const appState = {
-    gender: 'male',
-    age: 25,
-    heightCm: 170,
-    weightKg: 65,
-    lastComputed: {
-        bmi: 22.5,
-        category: 'Normal / Healthy',
-        idealMinKg: 53.5,
-        idealMaxKg: 72.0,
-        bmr: 1620
-    }
-};
+// Function to calculate BMI when the user clicks "Calculate My BMI"
+function calculateBMI() {
+    // 1. Read input values from the HTML fields
+    const height = parseFloat(document.getElementById('height').value);
+    const weight = parseFloat(document.getElementById('weight').value);
+    const age = document.getElementById('age').value;
 
-// DOM Cache
-const dom = {
-    cardMale: document.getElementById('cardMale'),
-    cardFemale: document.getElementById('cardFemale'),
-
-    ageInput: document.getElementById('ageInput'),
-    ageRange: document.getElementById('ageRange'),
-
-    heightInput: document.getElementById('heightInput'),
-    heightRange: document.getElementById('heightRange'),
-    heightUnitTag: document.getElementById('heightUnitTag'),
-    heightMinLabel: document.getElementById('heightMinLabel'),
-    heightMaxLabel: document.getElementById('heightMaxLabel'),
-
-    weightInput: document.getElementById('weightInput'),
-    weightRange: document.getElementById('weightRange'),
-    weightUnitTag: document.getElementById('weightUnitTag'),
-    weightMinLabel: document.getElementById('weightMinLabel'),
-    weightMaxLabel: document.getElementById('weightMaxLabel'),
-
-    // Gauge & Needle
-    svgNeedleGroup: document.getElementById('svgNeedleGroup'),
-    gaugeStatusText: document.getElementById('gaugeStatusText'),
-    healthyRangeText: document.getElementById('healthyRangeText'),
-    bmrValue: document.getElementById('bmrValue'),
-
-    // Outputs
-    bmiNumberDisplay: document.getElementById('bmiNumberDisplay'),
-    bmiCategoryBadge: document.getElementById('bmiCategoryBadge'),
-    idealWeightDisplay: document.getElementById('idealWeightDisplay'),
-    heightEcho: document.getElementById('heightEcho'),
-    healthRiskDisplay: document.getElementById('healthRiskDisplay'),
-    adviceParagraph: document.getElementById('adviceParagraph'),
-
-    // Reference Table Rows
-    rowUnderweight: document.getElementById('rowUnderweight'),
-    rowNormal: document.getElementById('rowNormal'),
-    rowOverweight: document.getElementById('rowOverweight'),
-    rowObese: document.getElementById('rowObese')
-};
-
-// Initialization
-document.addEventListener('DOMContentLoaded', () => {
-    // Add real-time event listeners to all controls
-    ['input', 'change'].forEach(eventType => {
-        if (dom.heightInput) dom.heightInput.addEventListener(eventType, syncHeightFromNumber);
-        if (dom.heightRange) dom.heightRange.addEventListener(eventType, syncHeightFromRange);
-        if (dom.weightInput) dom.weightInput.addEventListener(eventType, syncWeightFromNumber);
-        if (dom.weightRange) dom.weightRange.addEventListener(eventType, syncWeightFromRange);
-        if (dom.ageInput) dom.ageInput.addEventListener(eventType, syncAgeFromNumber);
-        if (dom.ageRange) dom.ageRange.addEventListener(eventType, syncAgeFromRange);
-    });
-
-    computeBMI();
-});
-
-/**
- * Switch Gender
- */
-function selectGender(gender) {
-    appState.gender = gender;
-    if (gender === 'male') {
-        dom.cardMale.classList.add('active');
-        dom.cardFemale.classList.remove('active');
-    } else {
-        dom.cardFemale.classList.add('active');
-        dom.cardMale.classList.remove('active');
-    }
-    computeBMI();
-}
-
-/**
- * Value synchronizations (Metric: cm and kg)
- */
-function syncAgeFromNumber() {
-    let val = parseInt(dom.ageInput.value, 10) || 2;
-    val = Math.max(2, Math.min(120, val));
-    dom.ageRange.value = val;
-    appState.age = val;
-    computeBMI();
-}
-
-function syncAgeFromRange() {
-    let val = parseInt(dom.ageRange.value, 10);
-    dom.ageInput.value = val;
-    appState.age = val;
-    computeBMI();
-}
-
-function syncHeightFromNumber() {
-    let val = parseFloat(dom.heightInput.value) || 0;
-    dom.heightRange.value = val;
-    appState.heightCm = val;
-    computeBMI();
-}
-
-function syncHeightFromRange() {
-    let val = parseFloat(dom.heightRange.value);
-    dom.heightInput.value = val;
-    appState.heightCm = val;
-    computeBMI();
-}
-
-function syncWeightFromNumber() {
-    let val = parseFloat(dom.weightInput.value) || 0;
-    dom.weightRange.value = val;
-    appState.weightKg = val;
-    computeBMI();
-}
-
-function syncWeightFromRange() {
-    let val = parseFloat(dom.weightRange.value);
-    dom.weightInput.value = val;
-    appState.weightKg = val;
-    computeBMI();
-}
-
-/**
- * Quick preset helpers
- */
-function setHeight(val) {
-    dom.heightInput.value = val;
-    dom.heightRange.value = val;
-    appState.heightCm = val;
-    computeBMI();
-}
-
-function setWeight(val) {
-    dom.weightInput.value = val;
-    dom.weightRange.value = val;
-    appState.weightKg = val;
-    computeBMI();
-}
-
-/**
- * Main BMI Calculation
- * BMI = weight (kg) / [height (m)]^2
- */
-function computeBMI() {
-    const heightMeters = appState.heightCm / 100;
-    const weightKg = appState.weightKg;
-
-    if (heightMeters <= 0 || weightKg <= 0) {
+    // 2. Validate that height and weight are valid positive numbers
+    if (isNaN(height) || isNaN(weight) || height <= 0 || weight <= 0) {
+        alert("Please enter valid positive numbers for height and weight!");
         return;
     }
 
-    const bmi = weightKg / (heightMeters * heightMeters);
-    const formattedBMI = bmi.toFixed(1);
+    // 3. BMI Formula: weight (kg) / [height (in meters)]²
+    // Convert height from centimeters (cm) to meters (m)
+    const heightInMeters = height / 100;
 
-    // Calculate Ideal Weight Range for this height (WHO range: 18.5 - 24.9 kg/m²)
-    const minIdealKg = 18.5 * (heightMeters * heightMeters);
-    const maxIdealKg = 24.9 * (heightMeters * heightMeters);
+    // Calculate BMI and round to 1 decimal place using .toFixed(1)
+    const bmi = (weight / (heightInMeters * heightInMeters)).toFixed(1);
 
-    // Calculate BMR (Mifflin-St Jeor equation)
-    let bmr = (10 * weightKg) + (6.25 * appState.heightCm) - (5 * appState.age);
-    bmr += (appState.gender === 'male' ? 5 : -161);
-    bmr = Math.round(bmr);
+    // 4. Variables to hold the category name, advice message, and styling class
+    let category = "";
+    let advice = "";
+    let badgeClass = "";
 
-    // Determine Category, Health Risk, Advice, and Gauge Needle Angle
-    let category = '';
-    let categoryClass = '';
-    let healthRisk = '';
-    let advice = '';
-    let needleAngle = 0; // -90deg (far left, underweight) to +90deg (far right, obese)
-
-    // Clear active table rows
-    [dom.rowUnderweight, dom.rowNormal, dom.rowOverweight, dom.rowObese].forEach(r => {
-        if (r) r.classList.remove('table-active-row');
-    });
-
+    // Simple if-else condition following World Health Organization (WHO) rules
     if (bmi < 18.5) {
-        category = 'Underweight';
-        categoryClass = 'badge bg-sky-subtle text-sky';
-        healthRisk = 'Nutritional Risk';
-        advice = 'Focus on nutrient-dense meals including nuts, whole grains, avocados, and healthy proteins. Resistance training is recommended to build lean muscle mass.';
-        if (dom.rowUnderweight) dom.rowUnderweight.classList.add('table-active-row');
-        
-        // Gauge needle: maps 10 to 18.5 -> -90deg to -45deg
-        const progress = Math.max(0, Math.min(1, (bmi - 10) / 8.5));
-        needleAngle = -90 + (progress * 45);
-    } else if (bmi < 25.0) {
-        category = 'Normal & Healthy Weight';
-        categoryClass = 'badge bg-emerald-subtle text-emerald';
-        healthRisk = 'Minimal Risk';
-        advice = 'Great job! Maintain your current balanced diet with fresh produce and quality proteins. Keep up regular aerobic activities and strength exercises.';
-        if (dom.rowNormal) dom.rowNormal.classList.add('table-active-row');
-        
-        // Gauge needle: maps 18.5 to 25.0 -> -45deg to 0deg
-        const progress = (bmi - 18.5) / 6.5;
-        needleAngle = -45 + (progress * 45);
-    } else if (bmi < 30.0) {
-        category = 'Overweight';
-        categoryClass = 'badge bg-amber-subtle text-amber';
-        healthRisk = 'Moderate Risk';
-        advice = 'Aim for portion control and reduce refined sugars and processed fats. Increase daily physical movement (target 8,000+ daily steps) and consider consulting a dietitian.';
-        if (dom.rowOverweight) dom.rowOverweight.classList.add('table-active-row');
-        
-        // Gauge needle: maps 25.0 to 30.0 -> 0deg to +45deg
-        const progress = (bmi - 25.0) / 5.0;
-        needleAngle = 0 + (progress * 45);
+        category = "Underweight";
+        advice = "Your BMI suggests you are below the ideal weight range. Enjoy nutrient-rich meals with healthy fats and proteins.";
+        badgeClass = "badge-underweight";
+    } else if (bmi >= 18.5 && bmi < 24.9) {
+        category = "Normal / Healthy Weight";
+        advice = "Awesome! Your BMI is in the healthy zone. Continue eating wholesome foods and staying physically active.";
+        badgeClass = "badge-normal";
+    } else if (bmi >= 25.0 && bmi < 29.9) {
+        category = "Overweight";
+        advice = "Your BMI is slightly above the healthy range. Adding daily 30-minute walks and portion control can help.";
+        badgeClass = "badge-overweight";
     } else {
-        category = 'Obese';
-        categoryClass = 'badge bg-rose-subtle text-rose';
-        healthRisk = 'High Health Risk';
-        advice = 'Consider consulting a healthcare provider or nutritionist for a structured wellness roadmap. Gradual, sustainable weight loss through gentle exercise and calorie balance is advised.';
-        if (dom.rowObese) dom.rowObese.classList.add('table-active-row');
-        
-        // Gauge needle: maps 30.0 to 45.0 -> +45deg to +90deg
-        const progress = Math.min(1, (bmi - 30.0) / 15.0);
-        needleAngle = 45 + (progress * 45);
+        category = "Obese";
+        advice = "Your BMI is in the obese category. Consider speaking with a doctor or certified dietitian for personalized guidance.";
+        badgeClass = "badge-obese";
     }
 
-    // Save state
-    appState.lastComputed = {
-        bmi: formattedBMI,
-        category,
-        idealMinKg: minIdealKg,
-        idealMaxKg: maxIdealKg,
-        bmr
-    };
+    // 5. Update the HTML elements to show the results
+    document.getElementById('resultBmiNumber').innerText = bmi;
+    document.getElementById('resultCategoryBadge').innerText = category;
+    document.getElementById('resultCategoryBadge').className = "badge category-badge px-3 py-1.5 rounded-pill fw-bold fs-6 " + badgeClass;
+    document.getElementById('resultAdvice').innerText = advice;
 
-    // Update UI elements
-    dom.bmiNumberDisplay.textContent = formattedBMI;
-    dom.bmiCategoryBadge.textContent = category;
-    dom.bmiCategoryBadge.className = categoryClass + ' px-3 py-1 rounded-pill fw-bold';
-    dom.healthRiskDisplay.textContent = healthRisk;
-    dom.adviceParagraph.textContent = advice;
-
-    // Ideal weight display text (Metric)
-    dom.idealWeightDisplay.textContent = `${minIdealKg.toFixed(1)} – ${maxIdealKg.toFixed(1)} kg`;
-    dom.healthyRangeText.innerHTML = `Healthy weight for your height: <strong class="text-white">${minIdealKg.toFixed(1)} – ${maxIdealKg.toFixed(1)} kg</strong>`;
-    dom.heightEcho.textContent = `${Math.round(appState.heightCm)} cm`;
-
-    dom.bmrValue.textContent = `~ ${bmr.toLocaleString()} kcal/day`;
-    dom.gaugeStatusText.textContent = category;
-
-    // Apply color class to gauge text
-    if (bmi < 18.5) dom.gaugeStatusText.className = 'mt-4 fw-bold fs-4 text-sky';
-    else if (bmi < 25.0) dom.gaugeStatusText.className = 'mt-4 fw-bold fs-4 text-emerald';
-    else if (bmi < 30.0) dom.gaugeStatusText.className = 'mt-4 fw-bold fs-4 text-amber';
-    else dom.gaugeStatusText.className = 'mt-4 fw-bold fs-4 text-rose';
-
-    // Rotate Speedometer Needle (both SVG attribute and CSS transform for cross-browser reliability)
-    if (dom.svgNeedleGroup) {
-        dom.svgNeedleGroup.setAttribute('transform', `rotate(${needleAngle.toFixed(1)}, 130, 130)`);
-        dom.svgNeedleGroup.style.transform = `rotate(${needleAngle.toFixed(1)}deg)`;
-    }
+    // 6. Make the result card visible
+    document.getElementById('resultBox').style.display = "block";
 }
 
-/**
- * Reset Form to Defaults (Metric)
- */
+// Function to reset all inputs and hide the result card
 function resetForm() {
-    appState.gender = 'male';
-    dom.cardMale.classList.add('active');
-    dom.cardFemale.classList.remove('active');
+    // Clear all text inputs
+    document.getElementById('height').value = "";
+    document.getElementById('weight').value = "";
+    document.getElementById('age').value = "";
 
-    appState.age = 25;
-    dom.ageInput.value = 25;
-    dom.ageRange.value = 25;
+    // Reset gender radio to Male by default
+    document.getElementById('male').checked = true;
 
-    appState.heightCm = 170;
-    appState.weightKg = 65;
-
-    dom.heightInput.value = 170;
-    dom.heightRange.value = 170;
-    dom.weightInput.value = 65;
-    dom.weightRange.value = 65;
-
-    computeBMI();
+    // Hide the result card
+    document.getElementById('resultBox').style.display = "none";
 }

@@ -3,349 +3,167 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Calculate your Body Mass Index (BMI) with visual speedometer gauge, personalized health insights, and ideal weight range.">
-    <title>Smart BMI Calculator | Body Mass Index & Health Analyzer</title>
+    <title>Health & Wellness BMI Calculator</title>
 
-    <!-- Google Fonts -->
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Google Fonts: Outfit for titles, Plus Jakarta Sans for body text -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-    <!-- Bootstrap 5.3.2 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-    <div class="ambient-background">
-        <div class="glow-sphere sphere-1"></div>
-        <div class="glow-sphere sphere-2"></div>
-        <div class="glow-sphere sphere-3"></div>
-    </div>
 
-    <main class="page-container py-4 py-md-5">
-        <div class="container bmi-card rounded-4 shadow-lg p-3 p-md-4 p-lg-5">
+    <!-- Main Floating Glassmorphic Container -->
+    <div class="calculator-wrapper">
+        <div class="glass-card shadow-lg rounded-5 overflow-hidden">
             
-            <!-- Header Section -->
-            <header class="app-header d-flex flex-wrap justify-content-between align-items-center pb-3 mb-4 border-bottom border-light-subtle">
-                <div class="d-flex align-items-center gap-3">
-                    <div class="brand-avatar rounded-3 p-2 d-flex align-items-center justify-content-center">
-                        <svg class="brand-svg" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
-                            <path d="M12 5v14"/>
-                        </svg>
-                    </div>
-                    <div>
-                        <h1 class="h3 fw-bold mb-0 brand-name">BMI Calculator</h1>
-                        <span class="text-teal small fw-semibold">Body Mass Index & Fitness Diagnostic</span>
-                    </div>
-                </div>
-            </header>
-
-            <div class="row g-4 align-items-start">
+            <div class="row g-0">
                 
-                <!-- Left Column: Visual Speedometer Gauge -->
-                <div class="col-lg-5 col-12 text-center">
-                    <div class="gauge-panel p-4 rounded-4 shadow-sm h-100 d-flex flex-column justify-content-between">
-                        <div>
-                            <span class="badge category-badge px-3 py-2 rounded-pill fw-semibold mb-3">
-                                BMI Status Meter
-                            </span>
+                <!-- Left Creative Welcome & Tips Column -->
+                <div class="col-lg-5 creative-sidebar p-4 p-md-5 d-flex flex-column justify-content-between">
+                    <div>
+                        <div class="d-inline-flex align-items-center gap-2 wellness-badge px-3 py-1.5 rounded-pill mb-3">
+                            <span>🌿</span>
+                            <span class="small fw-bold">Live Healthy & Stay Fit</span>
+                        </div>
+                        
+                        <h1 class="display-6 fw-bold text-dark-slate mb-3">Check Your Body Health Score</h1>
+                        <p class="text-muted fs-6 mb-4">
+                            Your Body Mass Index (BMI) gives you a quick snapshot of whether your weight is balanced for your height.
+                        </p>
 
-                            <!-- Visual Speedometer Gauge Arc with Integrated Vector Needle -->
-                            <div class="gauge-display-box position-relative mx-auto my-3">
-                                <svg class="gauge-vector" viewBox="0 0 260 160" width="100%" height="auto">
-                                    <defs>
-                                        <linearGradient id="needleGrad" x1="0%" y1="100%" x2="0%" y2="0%">
-                                            <stop offset="0%" stop-color="#ffffff"/>
-                                            <stop offset="50%" stop-color="#2dd4bf"/>
-                                            <stop offset="100%" stop-color="#14b8a6"/>
-                                        </linearGradient>
-                                        <filter id="needleGlow" x="-30%" y="-30%" width="160%" height="160%">
-                                            <feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="#14b8a6" flood-opacity="0.8"/>
-                                        </filter>
-                                    </defs>
-                                    
-                                    <!-- Gray Track Arc -->
-                                    <path d="M 25 130 A 105 105 0 0 1 235 130" fill="none" stroke="rgba(255, 255, 255, 0.08)" stroke-width="22" stroke-linecap="round"/>
-                                    
-                                    <!-- 1. Underweight (Sky Blue): < 18.5 -->
-                                    <path d="M 25 130 A 105 105 0 0 1 68 56" fill="none" stroke="#38bdf8" stroke-width="22" stroke-linecap="round"/>
-                                    <!-- 2. Normal / Healthy (Emerald): 18.5 - 24.9 -->
-                                    <path d="M 72 51 A 105 105 0 0 1 144 26" fill="none" stroke="#10b981" stroke-width="22"/>
-                                    <!-- 3. Overweight (Amber): 25.0 - 29.9 -->
-                                    <path d="M 148 27 A 105 105 0 0 1 198 62" fill="none" stroke="#f59e0b" stroke-width="22"/>
-                                    <!-- 4. Obese (Coral/Crimson): >= 30.0 -->
-                                    <path d="M 202 68 A 105 105 0 0 1 235 130" fill="none" stroke="#f43f5e" stroke-width="22" stroke-linecap="round"/>
-
-                                    <!-- Integrated Dynamic Vector Needle (Rotates around 130, 130) -->
-                                    <g id="svgNeedleGroup" transform="rotate(-15, 130, 130)">
-                                        <polygon points="125,130 135,130 132,32 130,16 128,32" fill="url(#needleGrad)" filter="url(#needleGlow)"/>
-                                        <circle cx="130" cy="130" r="13" fill="#ffffff" filter="url(#needleGlow)"/>
-                                        <circle cx="130" cy="130" r="7" fill="#0b1120"/>
-                                    </g>
-                                </svg>
+                        <!-- Quick Healthy Habit Cards -->
+                        <div class="habit-tip p-3 rounded-4 mb-3 d-flex align-items-center gap-3">
+                            <div class="tip-icon-box rounded-circle">💧</div>
+                            <div>
+                                <span class="d-block fw-bold text-dark small">Daily Hydration</span>
+                                <span class="text-muted small">Drink 2.5 to 3 liters of fresh water daily</span>
                             </div>
-
-                            <!-- Scale Legend -->
-                            <div class="gauge-scale-legend d-flex justify-content-between px-2 small">
-                                <span class="text-sky fw-semibold">&lt;18.5 Under</span>
-                                <span class="text-emerald fw-semibold">18.5–24.9 Normal</span>
-                                <span class="text-amber fw-semibold">25–29.9 Over</span>
-                                <span class="text-rose fw-semibold">&ge;30 Obese</span>
-                            </div>
-
-                            <!-- Gauge Active Status Pill -->
-                            <div id="gaugeStatusText" class="mt-4 fw-bold fs-4 text-emerald">
-                                Normal &bull; Healthy Weight
-                            </div>
-                            <p id="healthyRangeText" class="small text-secondary mt-1 mb-0">
-                                Healthy weight for your height: <strong class="text-white">53.5 – 72.0 kg</strong>
-                            </p>
                         </div>
 
-                        <!-- Highlights Footer -->
-                        <div class="mt-4 pt-3 border-top border-light-subtle text-start">
-                            <div class="d-flex align-items-center justify-content-between mb-2">
-                                <span class="small text-muted">Healthy BMI Standard:</span>
-                                <span class="badge bg-emerald-subtle text-emerald fw-bold">18.5 – 24.9 kg/m²</span>
+                        <div class="habit-tip p-3 rounded-4 mb-3 d-flex align-items-center gap-3">
+                            <div class="tip-icon-box rounded-circle">🥗</div>
+                            <div>
+                                <span class="d-block fw-bold text-dark small">Nutrient Balance</span>
+                                <span class="text-muted small">Eat colorful vegetables, fruits & proteins</span>
                             </div>
-                            <div class="d-flex align-items-center justify-content-between">
-                                <span class="small text-muted">Estimated Daily BMR:</span>
-                                <span id="bmrValue" class="small fw-bold text-white">~ 1,620 kcal/day</span>
-                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Simple BMI Reference Guide on Sidebar -->
+                    <div class="mt-4 pt-3 border-top border-light-subtle">
+                        <span class="text-uppercase small fw-bold text-secondary d-block mb-2">WHO Health Standards</span>
+                        <div class="d-flex justify-content-between text-center small">
+                            <div class="ref-pill pill-blue">&lt; 18.5<br><span class="fw-normal">Under</span></div>
+                            <div class="ref-pill pill-green">18.5 - 24.9<br><span class="fw-normal">Normal</span></div>
+                            <div class="ref-pill pill-yellow">25 - 29.9<br><span class="fw-normal">Over</span></div>
+                            <div class="ref-pill pill-red">&ge; 30.0<br><span class="fw-normal">Obese</span></div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Right Column: Interactive Form Controls & Sliders -->
-                <div class="col-lg-7 col-12">
-                    <form id="bmiForm" class="inputs-panel p-3 p-md-4 rounded-4 shadow-sm" onsubmit="event.preventDefault(); computeBMI();">
+                <!-- Right Form & Results Column -->
+                <div class="col-lg-7 form-content p-4 p-md-5 d-flex flex-column justify-content-center">
+                    
+                    <div class="form-header mb-4">
+                        <h2 class="h4 fw-bold text-dark-slate mb-1">Enter Your Details</h2>
+                        <p class="text-muted small mb-0">Fill in the fields below to calculate your BMI instantly</p>
+                    </div>
+
+                    <!-- Input Form -->
+                    <form onsubmit="event.preventDefault(); calculateBMI();">
                         
-                        <!-- Gender Selection Cards -->
+                        <!-- 1. Gender Selection -->
                         <div class="mb-4">
-                            <label class="form-label fw-bold small text-uppercase letter-spacing text-muted mb-2">Select Biological Gender</label>
+                            <label class="form-label fw-bold small text-uppercase text-secondary">Select Gender</label>
                             <div class="row g-2">
                                 <div class="col-6">
-                                    <div class="gender-card active p-3 rounded-3 text-center d-flex align-items-center justify-content-center gap-2" id="cardMale" onclick="selectGender('male')">
-                                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <circle cx="10" cy="14" r="5"/>
-                                            <line x1="19" y1="5" x2="13.6" y2="10.4"/>
-                                            <line x1="19" y1="5" x2="14" y2="5"/>
-                                            <line x1="19" y1="5" x2="19" y2="10"/>
-                                        </svg>
-                                        <span class="fw-bold">Male</span>
-                                    </div>
+                                    <input type="radio" class="btn-check" name="gender" id="male" checked>
+                                    <label class="btn btn-outline-gender w-100 py-2.5 rounded-4 d-flex align-items-center justify-content-center gap-2 fw-semibold" for="male">
+                                        <span>👨</span> Male
+                                    </label>
                                 </div>
                                 <div class="col-6">
-                                    <div class="gender-card p-3 rounded-3 text-center d-flex align-items-center justify-content-center gap-2" id="cardFemale" onclick="selectGender('female')">
-                                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <circle cx="12" cy="9" r="5"/>
-                                            <line x1="12" y1="14" x2="12" y2="21"/>
-                                            <line x1="9" y1="18" x2="15" y2="18"/>
-                                        </svg>
-                                        <span class="fw-bold">Female</span>
-                                    </div>
+                                    <input type="radio" class="btn-check" name="gender" id="female">
+                                    <label class="btn btn-outline-gender w-100 py-2.5 rounded-4 d-flex align-items-center justify-content-center gap-2 fw-semibold" for="female">
+                                        <span>👩</span> Female
+                                    </label>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Age Input -->
-                        <div class="control-box mb-4">
-                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                <label for="ageInput" class="form-label fw-bold mb-0 d-flex align-items-center gap-2">
-                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <circle cx="12" cy="12" r="10"/>
-                                        <polyline points="12 6 12 12 16 14"/>
-                                    </svg>
-                                    Age
-                                </label>
-                                <div class="value-badge-wrapper">
-                                    <input type="number" id="ageInput" class="form-number-input" value="25" min="2" max="120" oninput="syncAgeFromNumber()">
-                                    <span class="unit-tag">yrs</span>
-                                </div>
-                            </div>
-                            <input type="range" class="form-range slider-range" id="ageRange" min="2" max="100" value="25" oninput="syncAgeFromRange()">
-                        </div>
-
-                        <!-- Height Input -->
-                        <div class="control-box mb-4">
-                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                <label for="heightInput" class="form-label fw-bold mb-0 d-flex align-items-center gap-2">
-                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"/>
-                                    </svg>
-                                    Height
-                                </label>
-                                <div class="value-badge-wrapper">
-                                    <input type="number" id="heightInput" class="form-number-input" value="170" min="50" max="250" step="0.5" oninput="syncHeightFromNumber()">
-                                    <span id="heightUnitTag" class="unit-tag">cm</span>
-                                </div>
-                            </div>
-                            <input type="range" class="form-range slider-range" id="heightRange" min="100" max="220" step="1" value="170" oninput="syncHeightFromRange()">
-                            <div class="d-flex justify-content-between small text-muted">
-                                <span id="heightMinLabel">100 cm</span>
-                                <div class="quick-presets d-flex gap-1">
-                                    <button type="button" class="preset-pill" onclick="setHeight(160)">160 cm</button>
-                                    <button type="button" class="preset-pill" onclick="setHeight(170)">170 cm</button>
-                                    <button type="button" class="preset-pill" onclick="setHeight(180)">180 cm</button>
-                                </div>
-                                <span id="heightMaxLabel">220 cm</span>
+                        <!-- 2. Age Input -->
+                        <div class="mb-3">
+                            <label for="age" class="form-label fw-bold small text-uppercase text-secondary">Age</label>
+                            <div class="input-wrapper position-relative">
+                                <input type="number" id="age" class="form-control creative-input" placeholder="e.g. 25" min="2" max="120">
+                                <span class="input-unit">years</span>
                             </div>
                         </div>
 
-                        <!-- Weight Input -->
-                        <div class="control-box mb-4">
-                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                <label for="weightInput" class="form-label fw-bold mb-0 d-flex align-items-center gap-2">
-                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <circle cx="12" cy="12" r="9"/>
-                                        <path d="M12 7v5l3 3"/>
-                                    </svg>
-                                    Weight
-                                </label>
-                                <div class="value-badge-wrapper">
-                                    <input type="number" id="weightInput" class="form-number-input" value="65" min="10" max="300" step="0.5" oninput="syncWeightFromNumber()">
-                                    <span id="weightUnitTag" class="unit-tag">kg</span>
-                                </div>
-                            </div>
-                            <input type="range" class="form-range slider-range" id="weightRange" min="30" max="160" step="0.5" value="65" oninput="syncWeightFromRange()">
-                            <div class="d-flex justify-content-between small text-muted">
-                                <span id="weightMinLabel">30 kg</span>
-                                <div class="quick-presets d-flex gap-1">
-                                    <button type="button" class="preset-pill" onclick="setWeight(55)">55 kg</button>
-                                    <button type="button" class="preset-pill" onclick="setWeight(65)">65 kg</button>
-                                    <button type="button" class="preset-pill" onclick="setWeight(75)">75 kg</button>
-                                </div>
-                                <span id="weightMaxLabel">160 kg</span>
+                        <!-- 3. Height Input -->
+                        <div class="mb-3">
+                            <label for="height" class="form-label fw-bold small text-uppercase text-secondary">Height</label>
+                            <div class="input-wrapper position-relative">
+                                <input type="number" id="height" class="form-control creative-input" placeholder="e.g. 170" min="50" max="250" step="any" required>
+                                <span class="input-unit">cm</span>
                             </div>
                         </div>
 
-                        <!-- Actions Row -->
-                        <div class="d-flex flex-wrap gap-3 align-items-center pt-2">
-                            <button type="button" id="btnCalculate" class="btn btn-action-calculate px-4 py-2 rounded-pill fw-bold d-flex align-items-center gap-2 shadow" onclick="computeBMI()">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-                                    <polyline points="22 4 12 14.01 9 11.01"/>
-                                </svg>
-                                Calculate BMI
+                        <!-- 4. Weight Input -->
+                        <div class="mb-4">
+                            <label for="weight" class="form-label fw-bold small text-uppercase text-secondary">Weight</label>
+                            <div class="input-wrapper position-relative">
+                                <input type="number" id="weight" class="form-control creative-input" placeholder="e.g. 65" min="10" max="300" step="any" required>
+                                <span class="input-unit">kg</span>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="d-flex gap-3 mb-4">
+                            <button type="button" class="btn btn-mint flex-grow-1 py-3 rounded-4 fw-bold shadow-sm" onclick="calculateBMI()">
+                                🚀 Calculate My BMI
                             </button>
-                            
-                            <button type="button" id="btnReset" class="btn btn-action-reset px-4 py-2 rounded-pill fw-semibold d-flex align-items-center gap-2" onclick="resetForm()">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
-                                    <path d="M3 3v5h5"/>
-                                </svg>
-                                Reset
+                            <button type="button" class="btn btn-soft-reset px-4 py-3 rounded-4 fw-bold" onclick="resetForm()">
+                                ↺ Reset
                             </button>
                         </div>
+
                     </form>
-                </div>
-            </div>
 
-            <!-- Result Cards & Guidance Section -->
-            <section id="resultSection" class="results-dashboard mt-5 pt-3">
-                <div class="row g-3">
-                    
-                    <!-- BMI Result Card -->
-                    <div class="col-md-4 col-12">
-                        <div class="result-tile prime-tile rounded-4 p-4 text-center">
-                            <span class="tile-title fw-bold small text-uppercase">Your BMI Score</span>
-                            <div id="bmiNumberDisplay" class="display-5 fw-extrabold text-white my-2">22.5</div>
-                            <span id="bmiCategoryBadge" class="badge bg-emerald-subtle text-emerald px-3 py-1 rounded-pill fw-bold">
-                                Healthy Weight
+                    <!-- Creative Result Box (Displays smoothly after calculation) -->
+                    <div id="resultBox" class="result-card p-4 rounded-4 mt-2" style="display: none;">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="small fw-bold text-uppercase text-muted">Your Result</span>
+                            <span id="resultCategoryBadge" class="badge category-badge px-3 py-1.5 rounded-pill fw-bold fs-6">
+                                Normal Weight
                             </span>
                         </div>
-                    </div>
-
-                    <!-- Healthy Weight Range Card -->
-                    <div class="col-md-4 col-sm-6 col-12">
-                        <div class="result-tile rounded-4 p-4 text-center">
-                            <span class="tile-title fw-bold small text-uppercase text-teal">Ideal Weight Range</span>
-                            <div id="idealWeightDisplay" class="fs-3 fw-bold text-teal my-2">53.5 – 72.0 kg</div>
-                            <p class="small text-secondary mb-0">For your height of <span id="heightEcho">170 cm</span></p>
+                        
+                        <div class="d-flex align-items-baseline gap-2 my-2">
+                            <span class="small text-muted fw-bold">BMI Score:</span>
+                            <span id="resultBmiNumber" class="display-5 fw-extrabold text-dark-slate">22.5</span>
+                            <span class="text-muted fw-semibold small">kg/m²</span>
                         </div>
+
+                        <p id="resultAdvice" class="result-message mb-0 mt-2 small text-secondary">
+                            Great job! Maintain a balanced diet and regular physical activity to sustain overall health.
+                        </p>
                     </div>
 
-                    <!-- Health Risk Classification -->
-                    <div class="col-md-4 col-sm-6 col-12">
-                        <div class="result-tile rounded-4 p-4 text-center">
-                            <span class="tile-title fw-bold small text-uppercase text-cyan">Associated Health Risk</span>
-                            <div id="healthRiskDisplay" class="fs-3 fw-bold text-cyan my-2">Minimal</div>
-                            <p class="small text-secondary mb-0">Cardiovascular & metabolic risk</p>
-                        </div>
-                    </div>
                 </div>
 
-                <!-- Personalized Recommendation Box -->
-                <div class="advice-card mt-4 p-4 rounded-4">
-                    <div class="d-flex align-items-center gap-2 mb-2">
-                        <svg class="text-teal" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="12" cy="12" r="10"/>
-                            <line x1="12" y1="16" x2="12" y2="12"/>
-                            <line x1="12" y1="8" x2="12.01" y2="8"/>
-                        </svg>
-                        <h3 class="h5 fw-bold mb-0">Personalized Health & Nutrition Guidance</h3>
-                    </div>
-                    <p id="adviceParagraph" class="text-secondary mb-0 fs-6">
-                        Maintain your current balanced diet rich in whole foods, quality proteins, and fiber. Aim for at least 150 minutes of moderate cardiovascular activity combined with resistance training each week.
-                    </p>
-                </div>
-
-                <!-- Educational BMI Chart Reference Table -->
-                <div class="table-responsive mt-4">
-                    <table class="table table-dark table-hover bmi-table rounded-4 overflow-hidden mb-0 align-middle">
-                        <thead>
-                            <tr>
-                                <th>Category</th>
-                                <th>BMI Range (kg/m²)</th>
-                                <th>Health Risk</th>
-                                <th>Suggested Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr id="rowUnderweight">
-                                <td><span class="status-dot dot-sky"></span> Underweight</td>
-                                <td>&lt; 18.5</td>
-                                <td>Nutritional deficiency, lower immunity</td>
-                                <td>Nutrient-dense meals & strength training</td>
-                            </tr>
-                            <tr id="rowNormal" class="table-active-row">
-                                <td><span class="status-dot dot-emerald"></span> Normal / Healthy</td>
-                                <td>18.5 – 24.9</td>
-                                <td>Lowest risk profile</td>
-                                <td>Maintain balanced lifestyle & exercise</td>
-                            </tr>
-                            <tr id="rowOverweight">
-                                <td><span class="status-dot dot-amber"></span> Overweight</td>
-                                <td>25.0 – 29.9</td>
-                                <td>Moderate cardiovascular risk</td>
-                                <td>Portion control & daily active exercise</td>
-                            </tr>
-                            <tr id="rowObese">
-                                <td><span class="status-dot dot-rose"></span> Obese (Class I & II)</td>
-                                <td>&ge; 30.0</td>
-                                <td>High risk of hypertension & diabetes</td>
-                                <td>Consult medical expert & structured diet</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-            </section>
-
-            <!-- Footer -->
-            <footer class="app-footer text-center mt-5 pt-3 border-top border-light-subtle small text-muted">
-                <p class="mb-0">Smart BMI Calculator &bull; Based on WHO standards &bull; Built with Vanilla HTML5, CSS & JS</p>
-            </footer>
+            </div>
 
         </div>
-    </main>
+    </div>
 
-    <!-- Bootstrap 5 JS Bundle -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- App Script -->
+    <!-- JavaScript File -->
     <script src="./script.js"></script>
 </body>
 </html>
