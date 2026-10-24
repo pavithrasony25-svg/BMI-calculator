@@ -1,0 +1,417 @@
+/* ==========================================================================
+   Smart BMI Calculator - Modern Aesthetics & Dynamic Styling
+   Palette: Deep Midnight Obsidian (#0b1120), Neon Teal (#14b8a6), Cyan, Amber, Rose
+   ========================================================================== */
+
+:root {
+    --bg-dark: #0b1120;
+    --card-surface: rgba(15, 23, 42, 0.82);
+    --card-border: rgba(255, 255, 255, 0.08);
+    --input-box-bg: rgba(30, 41, 59, 0.45);
+    
+    --color-teal: #14b8a6;
+    --color-teal-glow: rgba(20, 184, 166, 0.3);
+    --color-emerald: #10b981;
+    --color-sky: #38bdf8;
+    --color-amber: #f59e0b;
+    --color-rose: #f43f5e;
+    
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    
+    --font-heading: 'Outfit', sans-serif;
+    --font-body: 'Plus Jakarta Sans', sans-serif;
+    
+    --radius-xl: 24px;
+    --radius-md: 16px;
+    --radius-sm: 10px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-dark);
+    font-family: var(--font-body);
+    color: var(--text-primary);
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+    line-height: 1.5;
+}
+
+/* Ambient Glowing Background Spheres */
+.ambient-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+}
+
+.glow-sphere {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(110px);
+    opacity: 0.22;
+    animation: floatSphere 20s ease-in-out infinite alternate;
+}
+
+.sphere-1 {
+    width: 480px;
+    height: 480px;
+    background: radial-gradient(circle, #14b8a6 0%, transparent 70%);
+    top: -80px;
+    left: -100px;
+}
+
+.sphere-2 {
+    width: 520px;
+    height: 520px;
+    background: radial-gradient(circle, #38bdf8 0%, transparent 70%);
+    bottom: -120px;
+    right: -100px;
+    animation-delay: -7s;
+}
+
+.sphere-3 {
+    width: 380px;
+    height: 380px;
+    background: radial-gradient(circle, #6366f1 0%, transparent 70%);
+    top: 35%;
+    left: 55%;
+    animation-delay: -12s;
+}
+
+@keyframes floatSphere {
+    0% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(45px, 35px) scale(1.08); }
+    100% { transform: translate(-35px, 50px) scale(0.96); }
+}
+
+/* Page Container */
+.page-container {
+    position: relative;
+    z-index: 1;
+}
+
+.bmi-card {
+    background: var(--card-surface);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid var(--card-border);
+    max-width: 1100px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.75);
+}
+
+/* Header & Avatar */
+.brand-avatar {
+    background: linear-gradient(135deg, rgba(20, 184, 166, 0.25), rgba(56, 189, 248, 0.2));
+    border: 1px solid rgba(20, 184, 166, 0.4);
+    color: var(--color-teal);
+}
+
+.brand-name {
+    font-family: var(--font-heading);
+    letter-spacing: -0.5px;
+}
+
+.text-teal { color: var(--color-teal) !important; }
+.text-emerald { color: var(--color-emerald) !important; }
+.text-sky { color: var(--color-sky) !important; }
+.text-amber { color: var(--color-amber) !important; }
+.text-rose { color: var(--color-rose) !important; }
+.text-cyan { color: var(--color-sky) !important; }
+
+.bg-emerald-subtle { background-color: rgba(16, 185, 129, 0.15) !important; }
+.bg-sky-subtle { background-color: rgba(56, 189, 248, 0.15) !important; }
+.bg-amber-subtle { background-color: rgba(245, 158, 11, 0.15) !important; }
+.bg-rose-subtle { background-color: rgba(244, 63, 94, 0.15) !important; }
+
+/* Gauge Panel */
+.gauge-panel {
+    background: var(--input-box-bg);
+    border: 1px solid var(--card-border);
+    backdrop-filter: blur(12px);
+    transition: border-color 0.3s ease;
+}
+
+.gauge-panel:hover {
+    border-color: rgba(20, 184, 166, 0.35);
+}
+
+.category-badge {
+    background-color: rgba(20, 184, 166, 0.15);
+    color: var(--color-teal);
+    border: 1px solid rgba(20, 184, 166, 0.3);
+}
+
+.gauge-display-box {
+    width: 260px;
+    height: 155px;
+}
+
+/* SVG Needle Group Animation */
+#svgNeedleGroup {
+    transform-origin: 130px 130px;
+    transition: transform 0.65s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Gender Selection Cards */
+.gender-card {
+    background: rgba(15, 23, 42, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.gender-card:hover {
+    border-color: var(--color-teal);
+    color: var(--text-primary);
+}
+
+.gender-card.active {
+    background: linear-gradient(135deg, rgba(20, 184, 166, 0.2), rgba(15, 23, 42, 0.9));
+    border-color: var(--color-teal);
+    color: var(--color-teal);
+    box-shadow: 0 0 16px rgba(20, 184, 166, 0.25);
+}
+
+/* Inputs & Form Controls */
+.inputs-panel {
+    background: var(--input-box-bg);
+    border: 1px solid var(--card-border);
+}
+
+.control-box {
+    background: rgba(15, 23, 42, 0.55);
+    padding: 16px 20px;
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.control-box:hover, .control-box:focus-within {
+    border-color: rgba(20, 184, 166, 0.4);
+    background: rgba(15, 23, 42, 0.75);
+}
+
+.value-badge-wrapper {
+    background: rgba(15, 23, 42, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: var(--radius-sm);
+    padding: 6px 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    transition: all 0.2s ease;
+}
+
+.value-badge-wrapper:focus-within {
+    border-color: var(--color-teal);
+    box-shadow: 0 0 0 3px var(--color-teal-glow);
+}
+
+.form-number-input {
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: 700;
+    font-family: var(--font-heading);
+    width: 90px;
+    text-align: right;
+    outline: none;
+}
+
+.form-number-input::-webkit-outer-spin-button,
+.form-number-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+.form-number-input[type=number] {
+    -moz-appearance: textfield;
+}
+
+.unit-tag {
+    color: var(--color-teal);
+    font-weight: 700;
+    font-size: 0.9rem;
+}
+
+/* Sliders */
+.slider-range {
+    height: 7px;
+    border-radius: 5px;
+    background: #334155;
+    outline: none;
+    margin: 12px 0 10px 0;
+}
+
+.slider-range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--color-teal);
+    border: 3px solid #ffffff;
+    cursor: pointer;
+    box-shadow: 0 0 12px rgba(20, 184, 166, 0.7);
+    transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.slider-range::-webkit-slider-thumb:hover {
+    transform: scale(1.18);
+    background: #2dd4bf;
+}
+
+/* Quick presets */
+.preset-pill {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 3px 9px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.preset-pill:hover {
+    background: rgba(20, 184, 166, 0.18);
+    border-color: var(--color-teal);
+    color: var(--color-teal);
+}
+
+/* Buttons */
+.btn-action-calculate {
+    background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+    transition: all 0.25s ease;
+}
+
+.btn-action-calculate:hover {
+    background: linear-gradient(135deg, #2dd4bf 0%, #14b8a6 100%);
+    color: #042f2e;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(20, 184, 166, 0.4);
+}
+
+.btn-action-reset {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: var(--text-secondary);
+    transition: all 0.25s ease;
+}
+
+.btn-action-reset:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Results Tiles */
+.result-tile {
+    background: rgba(15, 23, 42, 0.7);
+    border: 1px solid var(--card-border);
+    transition: transform 0.25s ease, border-color 0.25s ease;
+}
+
+.result-tile:hover {
+    transform: translateY(-3px);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.prime-tile {
+    background: linear-gradient(145deg, rgba(20, 184, 166, 0.18), rgba(15, 23, 42, 0.9));
+    border: 1px solid rgba(20, 184, 166, 0.4);
+    position: relative;
+    overflow: hidden;
+}
+
+.prime-tile::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #14b8a6, #38bdf8);
+}
+
+.tile-title {
+    letter-spacing: 1.2px;
+}
+
+/* Guidance Advice Card */
+.advice-card {
+    background: rgba(15, 23, 42, 0.5);
+    border: 1px solid var(--card-border);
+}
+
+/* Table */
+.bmi-table {
+    --bs-table-bg: transparent;
+    --bs-table-hover-bg: rgba(20, 184, 166, 0.08);
+    font-size: 0.9rem;
+}
+
+.bmi-table thead th {
+    background-color: rgba(15, 23, 42, 0.95);
+    color: var(--color-teal);
+    font-weight: 700;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+    padding: 12px 16px;
+}
+
+.bmi-table tbody td {
+    padding: 12px 16px;
+    border-color: rgba(255, 255, 255, 0.05);
+}
+
+.table-active-row {
+    background-color: rgba(20, 184, 166, 0.14) !important;
+    border-left: 3px solid var(--color-teal);
+}
+
+.status-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 6px;
+}
+
+.dot-sky { background-color: var(--color-sky); }
+.dot-emerald { background-color: var(--color-emerald); }
+.dot-amber { background-color: var(--color-amber); }
+.dot-rose { background-color: var(--color-rose); }
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .bmi-card {
+        padding: 20px 16px !important;
+        border-radius: var(--radius-md) !important;
+    }
+
+    .form-number-input {
+        width: 75px;
+        font-size: 1.05rem;
+    }
+
+    .gauge-display-box {
+        width: 220px;
+        height: 135px;
+    }
+}
